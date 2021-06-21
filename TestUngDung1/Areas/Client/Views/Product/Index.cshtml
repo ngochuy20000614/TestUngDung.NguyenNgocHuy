@@ -1,0 +1,58 @@
+﻿@model PagedList.IPagedList<ModelEF.ViewModels.ProductViewModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Client/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-9">
+    <div>
+        <ol class="breadcrumb">
+            <li><a href="#">Trang chủ</a></li>
+            <li class="active">Sách</li>
+        </ol>
+    </div>
+    <!-- /.div -->
+    <div class="row">
+        <div class="btn-group alg-right-pad">
+            <button type="button" class="btn btn-default"><strong>@Model.Count </strong>sản phẩm</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                    Sắp xếp &nbsp;
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Giá thấp</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Giá cao</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Phổ biến</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Lượt thích</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 text-center col-sm-6 col-xs-6">
+                <div class="thumbnail product-box" style="height:100%">
+                    <img src="@Url.Content(item.Image)" width="150" height="150"/>
+                    <div class="caption">
+                        <span class="tg-bookwriter" style="margin-bottom:5px ;max-height: 18px; font-size:13px; line-height:18px; 
+                            overflow: hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1">
+                            Tác phẩm: <a href="javascript:void(0);">@item.NameProduct</a>
+                        </span>
+                        <p>Giá : <strong>@(item.Unicost.HasValue ? item.Unicost.Value.ToString("N0") + "VNĐ" : " ")</strong>  </p>
+                        <p><a href="#" class="btn btn-success" role="button">Thêm vào giỏi</a> <a href="#" class="btn btn-primary" role="button">Xem chi tiết</a></p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @keyword = ViewBag.search }), PagedListRenderOptions.ClassicPlusFirstAndLast);
+
+</div>
+
